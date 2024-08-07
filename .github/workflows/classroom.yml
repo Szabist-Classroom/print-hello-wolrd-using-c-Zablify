@@ -13,37 +13,18 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Test hello World
-      id: test-hello-world
-      uses: classroom-resources/autograding-io-grader@v1
-      with:
-        test-name: Test hello World
-        setup-command: ''
-        command: run
-        input: |-
-          #include <stdio.h>
-
-          int main() {
-              printf("Hello, World!\n");
-              return 0;
-          }
-        expected-output: Hello World
-        comparison-method: contains
-        timeout: 10
-        max-score: 5
-    - name: test name
-      id: test-name
+    - name: test
+      id: test
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: test name
+        test-name: test
         setup-command: ''
         command: make test
         timeout: 10
-        max-score: 5
+        max-score: 10
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
-        TEST-HELLO-WORLD_RESULTS: "${{steps.test-hello-world.outputs.result}}"
-        TEST-NAME_RESULTS: "${{steps.test-name.outputs.result}}"
+        TEST_RESULTS: "${{steps.test.outputs.result}}"
       with:
-        runners: test-hello-world,test-name
+        runners: test
